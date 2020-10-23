@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Domain name check
+if [ $# -ne 1 ]; then
+  echo "Usage: wp-server-setup.sh <domain name>";
+  exit 1;
+fi
+
+sudo apt update && sudo apt upgrade
+
+# Swap file install
+echo "Setting up swap file"
+sudo fallocate -l 1G /swapfile  
+sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576  
+sudo chmod 600 /swapfile  
+sudo mkswap /swapfile  
+sudo swapon /swapfile  
+sudo echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
+
+# Web server setup
+echo "Setting up required web server software"
+sleep 3
+sudo apt install tasksel -y
+sudo tasksel install lamp-server
+sudo apt install php-curl php-gd php-mbstring php-xml php-xmlrpc mariadb-server libapache2-mod-php wget php7.3-mysql vsftpd ftp
+
+# Create Apache conf file for new site
+echo "Setting up site conf"
+sleep 2
+cat <<EOF >> /etc/apache2/sites-available/$1.conf
+<Directory /var/www/$1>  
+        Require all granted
+        AllowOverride All
+</Directory>  
+<VirtualHost *:80>  
+        ServerName $1  
+        ServerAlias www.$1  
+        DocumentRoot /var/www/$1  
+</VirtualHost>
+EOF
+
+echo "Disabling default site"
+mkdir -p /var/www/$1
+a2dissite 000-default.conf
+echo "Enabling new site"
+a2ensite $1.conf
+systemctl reload apache2
+
+echo "Creating WP db user"
+mysqlpw=$(openssl rand -base64 32 |head -c 10)
+mysql -u root  -e "CREATE DATABASE wordpress;"
+mysql -u root  -e "GRANT ALL ON wordpress.* TO 'wordpressuser' IDENTIFIED BY '$mysqlpw';"
+
+sed -i s'/max_input_time\ \=\ 60/max_input_time\ \=\ 30/' /etc/php/7.3/apache2/php.ini
+sed -i s'/upload_max_filesize\ \=\ 2M/upload_max_filesize\ \=\ 20M/' /etc/php/7.3/apache2/php.ini
+sed -i s'/post_max_size\ \=\ 8M/post_max_size\ \=\ 21M/' /etc/php/7.3/apache2/php.ini
+
+# Wordpress Setup
+cd /var/www/$1
+wget https://wordpress.org/latest.tar.gz
+tar -xzvf latest.tar.gz
+rm latest.tar.gz
+mv wordpress/* .
+rmdir wordpress
+rm *.txt readme.html
+chown -R www-data:www-data /var/www/html/*
+a2enmod rewrite
+
+mysql_secure_installation
+echo "Setup complete."
+echo "The WP DB user & pw are: wordpressuser :" $mysqlpw
