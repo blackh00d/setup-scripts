@@ -17,7 +17,7 @@ apt install -q -y wmctrl javasnoop jsql-injection magictree maltego maltego-teet
 apt install -q -y build-essential g++ xsel make fakeroot jq ruby-full libcurl4-openssl-dev libxml2 libxml2-dev libxslt1-dev ruby-dev
 apt install -q -y libgmp-dev zlib1g-dev gcc-multilib libcanberra-pulse libssh-dev autoconf  libsmbclient libsmbclient-dev libffi-dev python-dev python-xlib
 apt install -q -y routersploit krb5-user cifs-utils rdate libxcb-xtest0 golang redis-tools mingw-w64 mingw-w64-i686-dev zabbix-cli
-apt install -q -y gnome-calculator gimp payloadsallthethings crackmapexec
+apt install -q -y gnome-calculator gimp payloadsallthethings crackmapexec python3-pip
 
 Install Mobile Pentesting Tools
 echo "Installing Mobile Pentesting Tools"
