@@ -5,7 +5,7 @@ apt update && apt full-upgrade -y
 
 # Cleanup
 apt install -f -y
-apt autoremove && autoclean
+apt autoremove && apt autoclean
 
 
 # Install usual packages
