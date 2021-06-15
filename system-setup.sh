@@ -47,7 +47,7 @@ apt install -f -y
 
 # Install Py packages
 echo "Installing Py Packages"
-pip install {proxy.py,getsploit,pwncrypto}
+pip install {proxy.py,getsploit}
 
 # Install Prebellico
 cd /opt
