@@ -11,7 +11,7 @@ apt autoremove && apt autoclean
 # Install usual packages
 echo "Installing packages"
 apt install -q -y kali-linux-{full,pwtools,web}
-apt install -q -y gedit leafpad terminator chromium ftp html2text terminator cookie-cadger dbeaver default-jdk default-jdk-headless default-jre default-jre-headless dex2jar
+apt install -q -y gedit leafpad terminator chromium ftp html2text cookie-cadger dbeaver default-jdk default-jdk-headless default-jre default-jre-headless dex2jar
 apt install -q -y libimage-exiftool-perl crowbar ncat gobuster masscan xfce4-clipman autokey-gtk flameshot ismtp sshuttle dirbuster filezilla
 apt install -q -y wmctrl javasnoop jsql-injection magictree maltego maltego-teeth mediainfo oscanner paros patator protos-sip smali webscarab zaproxy jd jd-gui python3-pip 
 apt install -q -y build-essential g++ xsel make fakeroot jq ruby-full libcurl4-openssl-dev libxml2 libxml2-dev libxslt1-dev ruby-dev
