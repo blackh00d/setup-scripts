@@ -54,6 +54,7 @@ apt install -f -y
 # Install Py packages
 echo "Installing Py Packages"
 pip install {proxy.py,getsploit}
+pip3 install defaultcreds-cheat-sheet
 
 # Install Prebellico
 cd /opt
